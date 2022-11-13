@@ -1,0 +1,24 @@
+html {
+  height: 100%;
+}
+
+body {
+  position: relative;
+  background-color: rgb(233, 233, 233) !important;
+  min-height: 100%;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+.is_valid {
+  background: inherit !important;
+}
+
+.page-link {
+  cursor: pointer;
+}

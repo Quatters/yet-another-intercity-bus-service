@@ -1,0 +1,41 @@
+{% extends "../../base/_base.html" %}
+
+{% load static %}
+
+{% block title %}
+    Администрирование
+{% endblock %}
+
+{% block inhead %}
+    <link rel="stylesheet" type="text/css" href="{% static 'main/admin-flight-list.css' %}">
+{% endblock %}
+
+{% block body %}
+    <div class="admin-flight-list-wrapper">
+        <div class="admin-flight-list">
+            <div class="row head">
+                <p class="col col-3">Маршрут</p>
+                <p class="col">Расписание</p>
+                <p class="col">Дата</p>
+                <p class="col col-3">Автобус</p>
+                <p class="col">Цена билета</p>
+                <p class="col col-1"></p>
+            </div>
+            {% for flight in page_obj %}
+            <div class="row list-row" >
+                <div class="col col-3">{{ flight.schedule.route }}</div>
+                <div class="col">{{ flight.schedule }}</div>
+                <div class="col">{{ flight.departure_date }}</div>
+                <div class="col col-3">{{ flight.bus }}</div>
+                <div class="col">{{ flight.price }}</div>
+                <div class="col col-1 col-checkbox">
+                    <input type="checkbox">
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="mt-3">
+        {% include "../../base/_pagination.html" %}
+    </div>
+{% endblock %}

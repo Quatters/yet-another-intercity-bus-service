@@ -1,0 +1,30 @@
+.admin-flight-list-wrapper {
+  background-color: white;
+  padding: 0 2rem;
+  border: 1px solid lightgray;
+  border-radius: 6px;
+}
+
+.admin-flight-list .head {
+  border-bottom: 1px solid lightgray;
+  font-weight: bold;
+  padding-top: 1rem;
+}
+
+.admin-flight-list .list-row {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.admin-flight-list .list-row:not(:last-child) {
+  border-bottom: 1px solid lightgray;
+}
+
+.admin-flight-list .list-row:last-child {
+  padding-bottom: 1rem;
+}
+
+.admin-flight-list .col-checkbox {
+  display: flex;
+  justify-content: flex-end;
+}

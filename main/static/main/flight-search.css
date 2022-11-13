@@ -1,0 +1,50 @@
+.flight-search-wrapper label {
+  display: none;
+}
+
+.flight-search-wrapper form {
+  display: flex;
+}
+
+.flight-search-wrapper form div {
+  margin-bottom: 0 !important;
+}
+
+.flight-search-wrapper form div input,
+.flight-search-wrapper form div select {
+  border-radius: 0;
+  box-shadow: none !important;
+}
+
+.flight-search-wrapper #id_from_city {
+  border-bottom-left-radius: 6px;
+  border-top-left-radius: 6px
+}
+
+.flight-search-wrapper #id_to_city {
+  border-left: none;
+  border-right: none;
+}
+
+.flight-search-wrapper #id_departure_date {
+  border-right: none;
+}
+
+.flight-search-wrapper form button {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  height: fit-content;
+}
+
+.flight-search-wrapper ul.list-unstyled.text-danger {
+  display: none;
+}
+
+.flight-search-wrapper .errorlist.nonfield {
+  font-size: 10pt;
+  list-style-type: none;
+  padding-left: 3px;
+  padding-top: 3px;
+}

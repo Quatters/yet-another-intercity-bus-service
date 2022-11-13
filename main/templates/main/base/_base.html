@@ -1,0 +1,21 @@
+{% load static %}
+
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'main/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'main/global.css' %}">
+    {% block inhead %}{% endblock %}
+    <script defer src="{% static 'main/bootstrap.bundle.min.js' %}"></script>
+    <title>{% block title %}{% endblock %} - Междугородные перевозки</title>
+</head>
+<body>
+    {% include "./_header.html" %}
+    <div class="container root">
+        {% block body %}{% endblock %}
+    </div>
+    {% include "./_footer.html" %}
+</body>
+</html>

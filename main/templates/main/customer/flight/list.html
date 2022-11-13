@@ -1,0 +1,81 @@
+{% extends "../../base/_base.html" %}
+
+{% load static %}
+{% load django_bootstrap5 %}
+{% load custom_filters %}
+
+{% block title %}
+    Рейсы
+{% endblock %}
+
+{% block inhead %}
+    <link rel="stylesheet" type="text/css" href="{% static 'main/flight-list-item.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'main/flight-search.css' %}">
+{% endblock %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+
+{% block body %}
+    <div>
+        <div class="flight-search-wrapper row">
+            <form method="get" class="form">
+                {% bootstrap_form form %}
+                {% bootstrap_button button_type="submit" content="Искать" %}
+            </form>
+            <div class="text-danger">
+                {{ form.non_field_errors }}
+            </div>
+        </div>
+
+        {% for flight in page_obj %}
+            <div class="flight-card" onclick="window.location='flights/{{ flight.id }}'">
+                <div class="row flight-list-item">
+                    <div class="timeline-wrapper col col-12 col-md-9">
+                        <div class="ending-wrapper">
+                            <div class="time time-start">
+                                {{ flight.departure_time }}
+                            </div>
+                            <div>
+                                {{ flight.from_city }}
+                            </div>
+                        </div>
+                        <div class="line-wrapper">
+                            <div class="line-start"></div>
+                            <div class="line">
+                                <div class="line-text">
+                                    {{ flight.travel_time|smooth_timedelta }}
+                                </div>
+                            </div>
+                            <div class="line-end"></div>
+                        </div>
+                        <div class="ending-wrapper">
+                            <div class="time time-end">
+                                {{ flight.arrival_time }}
+                            </div>
+                            <div>
+                                {{ flight.to_city }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info col">
+                        <div>
+                            {{ flight.departure_date }}
+                        </div>
+                        <div>
+                            Маршрут №{{ flight.route_number }}
+                        </div>
+                        <div>
+                            {{ flight.price }} руб.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+        <div class="mt-3">
+            {% include "../../base/_pagination.html" %}
+        </div>
+    </div>
+{% endblock %}

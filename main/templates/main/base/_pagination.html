@@ -1,0 +1,51 @@
+{% load static %}
+
+{% block inhead %}
+    <script defer src="{% static 'main/scripts.js' %}"></script>
+{% endblock %}
+
+<ul class="pagination btn-group pt-3" role="group">
+    <li class="page-item">
+        <a
+            {% if not page_obj.has_previous %}
+                class="page-link disabled"
+            {% else %}
+                class="page-link btn-light"
+                {% comment %} href="?page={{ page_obj.previous_page_number }}" {% endcomment %}
+                onclick="updateQuery('page', {{ page_obj.previous_page_number }})"
+            {% endif %}
+        >
+            &laquo;
+        </a>
+    </li>
+
+    {% for page_num in page_obj.paginator.page_range %}
+        <li class="page-item">
+            <a
+                {% comment %} href="?page={{ page_num }}" {% endcomment %}
+                onclick="updateQuery('page', {{ page_num }})"
+                {% if page_num == page_obj.number %}
+                    class="page-link active"
+                {% else %}
+                    class="page-link"
+                {% endif %}
+            >
+                {{ page_num }}
+            </a>
+        </li>
+    {% endfor %}
+
+    <li class="page-item">
+        <a
+            {% if not page_obj.has_next %}
+                class="page-link disabled"
+            {% else %}
+                class="page-link"
+                {% comment %} href="?page={{ page_obj.next_page_number }}" {% endcomment %}
+                onclick="updateQuery('page', {{ page_obj.next_page_number }})"
+            {% endif %}
+        >
+        &raquo;
+        </a>
+    </li>
+</ul>
