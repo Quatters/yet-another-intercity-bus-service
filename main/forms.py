@@ -8,6 +8,30 @@ class LoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput, label='Пароль')
 
 
+class CreateNewFlightForm(forms.Form):
+    route_number = forms.ChoiceField(
+        choices=[('', 'Маршрут...')] + models.Route.choices(),
+        label='Маршрут',
+    )
+    departure = forms.DateTimeField(
+        label='Отправление',
+        widget=forms.DateTimeInput(
+            attrs={'type': 'datetime-local'}
+        )
+    )
+    arrival = forms.DateTimeField(
+        label='Прибытие',
+        widget=forms.DateTimeInput(
+            attrs={'type': 'datetime-local'}
+        )
+    )
+    bus = forms.ChoiceField(
+        choices=[('', 'Автобус...')] + models.Bus.choices(),
+        label='Автобус',
+    )
+    price = forms.DecimalField(label='Цена билета')
+
+
 class SearchFlightForm(forms.Form):
     from_city = forms.ChoiceField(
         choices=[('', 'Откуда...')] + models.City.choices(),

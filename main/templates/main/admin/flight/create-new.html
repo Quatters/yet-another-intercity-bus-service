@@ -1,0 +1,28 @@
+{% extends "../../base/_base.html" %}
+
+{% load static %}
+{% load django_bootstrap5 %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+
+{% block title %}
+    Новый рейс
+{% endblock %}
+
+{% block inhead %}
+    <link rel="stylesheet" type="text/css" href="{% static 'main/admin-create-new.css' %}">
+    <script defer src="{% static 'main/admin.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+    <a href="/admin/" class="btn btn-sm btn-secondary mb-3">Назад</a>
+    <div class="create-new-wrapper">
+        <form method='post'>
+            {% csrf_token %}
+            {% bootstrap_form form layout='horizontal' %}
+            {% bootstrap_button button_type="submit" content="Создать" %}
+        </form>
+    </div>
+{% endblock %}

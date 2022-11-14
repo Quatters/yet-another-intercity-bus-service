@@ -6,7 +6,3 @@ function updateQuery(key, value) {
         searchParams.delete(key);
     window.location.search = searchParams.toString();
 }
-
-function selectRowAsCheckbox(event) {
-    console.log(event);
-}

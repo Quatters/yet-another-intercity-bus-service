@@ -8,9 +8,11 @@
 
 {% block inhead %}
     <link rel="stylesheet" type="text/css" href="{% static 'main/admin-flight-list.css' %}">
+    <script defer src="{% static 'main/admin.js' %}"></script>
 {% endblock %}
 
 {% block body %}
+    <a href="/admin/new-flight" class="btn btn-secondary btn-sm mb-3">Новый рейс...</a>
     <div class="admin-flight-list-wrapper">
         <div class="admin-flight-list">
             <div class="row head">
@@ -22,7 +24,7 @@
                 <p class="col col-1"></p>
             </div>
             {% for flight in page_obj %}
-            <div class="row list-row" >
+            <div class="row list-row" onclick="selectRowAsCheckbox(this)">
                 <div class="col col-3">{{ flight.schedule.route }}</div>
                 <div class="col">{{ flight.schedule }}</div>
                 <div class="col">{{ flight.departure_date }}</div>

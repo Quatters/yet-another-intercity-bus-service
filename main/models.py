@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models import Value
+from django.db.models.functions import Concat
 
 
 class City(models.Model):
@@ -12,7 +14,7 @@ class City(models.Model):
 
     @classmethod
     def choices(cls):
-        return list(cls.objects.values_list())
+        return list(cls.objects.values_list('id', 'name'))
 
 
 class BusModel(models.Model):
@@ -33,6 +35,12 @@ class Bus(models.Model):
     def __str__(self) -> str:
         return f'{self.bus_number} ({self.model})'
 
+    @classmethod
+    def choices(cls):
+        return list(cls.objects.annotate(
+            bus=Concat('bus_number', Value(' ('), 'model__name', Value(')'))
+        ).values_list('id', 'bus'))
+
 
 class Route(models.Model):
     route_number = models.CharField(max_length=5, unique=True)
@@ -42,6 +50,19 @@ class Route(models.Model):
 
     def __str__(self) -> str:
         return f'{self.route_number} ({self.from_city} - {self.to_city})'
+
+    @classmethod
+    def choices(cls):
+        return list(cls.objects.annotate(
+            route=Concat(
+                'route_number',
+                Value(' ('),
+                'from_city__name',
+                Value(' - '),
+                'to_city__name',
+                Value(')')
+            )
+        ).values_list('id', 'route'))
 
 
 class Schedule(models.Model):
@@ -57,6 +78,7 @@ class Flight(models.Model):
     bus = models.ForeignKey(Bus, on_delete=models.PROTECT)
     schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE)
     departure_date = models.DateField()
+    arrival_date = models.DateField()
     price = models.DecimalField(max_digits=8, decimal_places=2)
 
     class Meta:

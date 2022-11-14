@@ -14,6 +14,7 @@
 .admin-flight-list .list-row {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+  cursor: pointer;
 }
 
 .admin-flight-list .list-row:not(:last-child) {
@@ -27,4 +28,8 @@
 .admin-flight-list .col-checkbox {
   display: flex;
   justify-content: flex-end;
+}
+
+.admin-flight-list .col-checkbox input[type="checkbox"] {
+  cursor: pointer;
 }

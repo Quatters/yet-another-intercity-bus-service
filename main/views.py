@@ -52,6 +52,49 @@ class AdminFlightListView(LoginRequiredMixin, ListView):
         return qs
 
 
+class AdminCreateNewFlight(LoginRequiredMixin, View):
+    login_url = '/admin/login/'
+    template_name = 'main/admin/flight/create-new.html'
+
+    def get(self, request, *args, **kwargs):
+        form = forms.CreateNewFlightForm()
+        return render(request, self.template_name, {
+            'form': form,
+        })
+
+    def post(self, request, *args, **kwargs):
+        form = forms.CreateNewFlightForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            departure_time = ...
+            arrival_time = ...
+            departure_date = ...
+            arrival_date = ...
+            schedule = models.Schedule.objects.filter(
+                departure_time=...,
+                arrival_time=...,
+            ).first()
+            if schedule:
+                ...
+            else:
+                schedule = models.Schedule.objects.create(
+                    departure_time=departure_time,
+                    arrival_time=arrival_time,
+                    route=data['route']
+                )
+
+            flight = models.Flight.objects.create(
+                bus=data['bus'],
+                schedule=schedule,
+                departure_date=departure_date,
+                arrival_date=arrival_date,
+                price=data['price'],
+            )
+
+            ticket_count = ...
+            for i in range(1, ticket_count + 1):
+                models.Ticket.objects.create(flight=flight, seat_number=i)
+
 
 class FlightListView(ListView):
     template_name = 'main/customer/flight/list.html'
