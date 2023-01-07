@@ -1,10 +1,13 @@
 from django import template
 
+
 register = template.Library()
+
 
 @register.filter()
 def smooth_timedelta(timedeltaobj):
     """Convert a datetime.timedelta object into Days, Hours, Minutes."""
+
     secs = timedeltaobj.total_seconds()
     timetot = ""
     if secs > 86400: # 60sec * 60min * 24hrs
@@ -23,3 +26,11 @@ def smooth_timedelta(timedeltaobj):
         secs = secs - mins*60
 
     return timetot
+
+
+@register.filter()
+def sub(value, arg):
+    try:
+        return int(value) - int(arg)
+    except ValueError:
+        return None

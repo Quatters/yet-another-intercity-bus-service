@@ -1,0 +1,16 @@
+.tickets-wrapper {
+  border: 1px solid lightgray;
+  border-radius: 6px;
+  background-color: white;
+  padding: 2rem;
+}
+
+.tickets-wrapper .ticket {
+  height: 2.3rem !important;
+  width: 2.3rem !important;
+  margin: 3px;
+}
+
+form > :nth-child(2) {
+  display: none;
+}

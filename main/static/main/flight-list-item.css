@@ -18,7 +18,17 @@
 }
 
 .timeline-wrapper .ending-wrapper {
-  text-align: center;
+  position: relative;
+}
+
+.timeline-wrapper .ending-wrapper.start .city,
+.timeline-wrapper .ending-wrapper.start .date {
+  left: 0;
+}
+
+.timeline-wrapper .ending-wrapper.end .city,
+.timeline-wrapper .ending-wrapper.end .date {
+  right: 0;
 }
 
 .timeline-wrapper .line {
@@ -44,7 +54,23 @@
 }
 
 .timeline-wrapper .time {
-  font-size: 20pt;
+  font-size: 24pt;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.timeline-wrapper .date,
+.timeline-wrapper .city {
+  white-space: nowrap;
+  position: absolute;
+}
+
+.timeline-wrapper .date {
+  top: -5%;
+}
+
+.timeline-wrapper .city {
+  bottom: -5%;
 }
 
 .flight-list-item .divisor {
@@ -55,6 +81,7 @@
 
 .flight-list-item .info {
   border-left: 1px solid lightgray;
+  align-self: center;
 }
 
 .flight-card {
@@ -69,4 +96,15 @@
 .flight-card:hover {
   box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
   cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  .flight-list-item .info {
+    border-left: none;
+    border-top: 1px solid lightgray;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    padding-top: 0.5rem;
+  }
 }

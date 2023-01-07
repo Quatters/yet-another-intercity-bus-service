@@ -33,7 +33,7 @@ class Bus(models.Model):
         verbose_name_plural = 'buses'
 
     def __str__(self) -> str:
-        return f'{self.bus_number} ({self.model})'
+        return f'{self.bus_number} ({self.model} - {self.model.seats_amount} мест)'
 
     @classmethod
     def choices(cls):
@@ -71,7 +71,8 @@ class Schedule(models.Model):
     arrival_time = models.TimeField()
 
     def __str__(self) -> str:
-        return f'{self.departure_time} - {self.arrival_time}'
+        return f'{self.route.route_number}, {self.route.from_city} - ' \
+               f'{self.route.to_city} ({self.departure_time} - {self.arrival_time})'
 
 
 class Flight(models.Model):
@@ -82,11 +83,11 @@ class Flight(models.Model):
     price = models.DecimalField(max_digits=8, decimal_places=2)
 
     class Meta:
-        ordering = ['-departure_date', 'price']
+        ordering = ['-id', 'price']
 
     def __str__(self) -> str:
-        return f'Flight of {self.schedule}'
 
+        return f'Flight of {self.schedule}'
 
 class Ticket(models.Model):
     flight = models.ForeignKey(Flight, on_delete=models.CASCADE)
@@ -99,3 +100,10 @@ class Ticket(models.Model):
 
     def __str__(self) -> str:
         return f'Ticket of {self.flight}'
+
+    @classmethod
+    def seat_choices(cls, flight_id):
+        return cls.objects.filter(
+            flight_id=flight_id,
+            customer_name__isnull=True
+        ).values_list('id', 'seat_number')

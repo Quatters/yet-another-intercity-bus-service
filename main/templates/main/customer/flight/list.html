@@ -30,14 +30,17 @@
         </div>
 
         {% for flight in page_obj %}
-            <div class="flight-card" onclick="window.location='flights/{{ flight.id }}'">
+            <div class="flight-card" onclick="window.location='{{ flight.id }}'">
                 <div class="row flight-list-item">
                     <div class="timeline-wrapper col col-12 col-md-9">
-                        <div class="ending-wrapper">
+                        <div class="ending-wrapper start">
+                            <div class="date date-start">
+                                {{ flight.departure_date|date:'j b, D'|lower }}
+                            </div>
                             <div class="time time-start">
                                 {{ flight.departure_time }}
                             </div>
-                            <div>
+                            <div class="city">
                                 {{ flight.from_city }}
                             </div>
                         </div>
@@ -50,19 +53,21 @@
                             </div>
                             <div class="line-end"></div>
                         </div>
-                        <div class="ending-wrapper">
+                        <div class="ending-wrapper end">
+                            {% if flight.arrival_date != flight.departure_date %}
+                                <div class="date date-end">
+                                    {{ flight.arrival_date|date:'j b, D'|lower }}
+                                </div>
+                            {% endif %}
                             <div class="time time-end">
                                 {{ flight.arrival_time }}
                             </div>
-                            <div>
+                            <div class="city">
                                 {{ flight.to_city }}
                             </div>
                         </div>
                     </div>
                     <div class="info col">
-                        <div>
-                            {{ flight.departure_date }}
-                        </div>
                         <div>
                             Маршрут №{{ flight.route_number }}
                         </div>

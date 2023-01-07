@@ -8,4 +8,5 @@ urlpatterns = [
     path('admin/login/', views.AdminLoginView.as_view()),
     path('admin/new-flight/', views.AdminCreateNewFlight.as_view()),
     path('customer/flights/', views.FlightListView.as_view()),
+    path('customer/flights/<int:flight_id>', views.FlightDetailView.as_view()),
 ]

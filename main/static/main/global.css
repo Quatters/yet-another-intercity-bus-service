@@ -22,3 +22,11 @@ body {
 .page-link {
   cursor: pointer;
 }
+
+.invalid-feedback {
+  display: unset !important;
+}
+
+a.disabled {
+  pointer-events: none;
+}

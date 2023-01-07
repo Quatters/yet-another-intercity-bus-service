@@ -1,4 +1,7 @@
+from datetime import timedelta
+from secrets import choice
 from django import forms
+from django.utils import timezone
 from django.core.exceptions import ValidationError
 from main import models
 
@@ -9,8 +12,8 @@ class LoginForm(forms.Form):
 
 
 class CreateNewFlightForm(forms.Form):
-    route_number = forms.ChoiceField(
-        choices=[('', 'Маршрут...')] + models.Route.choices(),
+    route_number = forms.ModelChoiceField(
+        queryset=models.Route.objects,
         label='Маршрут',
     )
     departure = forms.DateTimeField(
@@ -25,20 +28,40 @@ class CreateNewFlightForm(forms.Form):
             attrs={'type': 'datetime-local'}
         )
     )
-    bus = forms.ChoiceField(
-        choices=[('', 'Автобус...')] + models.Bus.choices(),
+    bus = forms.ModelChoiceField(
+        queryset=models.Bus.objects,
         label='Автобус',
     )
     price = forms.DecimalField(label='Цена билета')
 
+    def clean(self):
+        departure = self.cleaned_data.get('departure')
+        arrival = self.cleaned_data.get('arrival')
+        if departure and arrival and departure >= arrival:
+            raise ValidationError(
+                'Дата прибытия должна быть позже, чем дата отправления.',
+            )
+        return self.cleaned_data
+
+    def clean_departure(self):
+        departure = self.cleaned_data.get('departure')
+        if departure <= timezone.now() + timedelta(days=3):
+            raise ValidationError(
+                'Дата отправления должна быть не ранее, чем за три дня, начиная от текущего дня.'
+            )
+        return departure
+
 
 class SearchFlightForm(forms.Form):
-    from_city = forms.ChoiceField(
-        choices=[('', 'Откуда...')] + models.City.choices(),
-        label='Откуда'
+    from_city = forms.ModelChoiceField(
+        queryset=models.City.objects,
+        empty_label='Откуда...',
+        label='Откуда',
+        initial=models.City.objects.get(name='Владивосток')
     )
-    to_city = forms.ChoiceField(
-        choices=[('', 'Куда...')] + models.City.choices(),
+    to_city = forms.ModelChoiceField(
+        queryset=models.City.objects,
+        empty_label='Куда...',
         label='Куда'
     )
     departure_date = forms.DateField(
@@ -59,3 +82,16 @@ class SearchFlightForm(forms.Form):
         if from_city and to_city and from_city == to_city:
             raise ValidationError('Пункт отправления и пункт прибытия должны различаться.')
         return self.cleaned_data
+
+
+class BuyTicketForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        flight_id = kwargs.pop('flight_id')
+        self.base_fields['ticket'].choices = models.Ticket.seat_choices(flight_id)
+        super().__init__(*args, **kwargs)
+
+    ticket = forms.TypedMultipleChoiceField(
+        coerce=int,
+        label='Место',
+    )
+    name = forms.CharField(label="Покупатель")

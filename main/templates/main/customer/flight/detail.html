@@ -1,0 +1,86 @@
+{% extends "../../base/_base.html" %}
+
+{% load static %}
+{% load custom_filters %}
+{% load django_bootstrap5 %}
+
+{% block title %}
+    Билеты
+{% endblock %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+
+{% block inhead %}
+    <link rel="stylesheet" type="text/css" href="{% static 'main/tickets.css' %}">
+    <script defer src="{% static 'main/select-ticket.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+<a href="/customer/flights/" class="btn btn-sm btn-secondary mb-3">Назад</a>
+<div class="d-flex justify-content-between">
+    <div class="card">
+        <div class="card-body">
+            <form method='post' class="ms-auto">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                {% bootstrap_button button_type="submit" content="Купить" %}
+            </form>
+        </div>
+    </div>
+    <div class="tickets-wrapper d-flex w-100 ms-2">
+        <div class="common-tickets">
+            {% for ticket in common_tickets %}
+                {% if forloop.counter|sub:1 in divide_on %}
+                    <br {% if forloop.counter|sub:1 == half %}class="mb-5"{% endif %}>
+                {% endif %}
+                <button
+                    class="ticket btn btn-sm btn-primary"
+                    type="button"
+                    onclick="selectTicket(this)"
+                    {% if ticket.disabled %}disabled{% endif %}>
+
+                    {{ ticket.seat_number }}
+                    <span class="ticket-id d-none">{{ ticket.id }}</span>
+                </button>
+            {% endfor %}
+        </div>
+        <div class="extra-tickets d-flex flex-column align-self-center ms-4">
+            {% for ticket in extra_tickets %}
+                <button
+                    class="ticket btn btn-sm btn-primary"
+                    type="button"
+                    onclick="selectTicket(this)"
+                    {% if ticket.disabled %}disabled{% endif %}>
+
+                    {{ ticket.seat_number }}
+                    <span class="ticket-id d-none">{{ ticket.id }}</span>
+                </button>
+            {% endfor %}
+        </div>
+    </div>
+    {% if buy_data %}
+    <div class="card ms-2">
+        <div class="card-body">
+            Билеты куплены
+            <div>
+                Рейс: {{ buy_data.flight.schedule }}
+            </div>
+            <div>
+                Места:
+                {% for t in buy_data.tickets %}
+                    {{ t.seat_number }}
+                {% endfor %}
+            </div>
+                <div>
+                Сумма покупки: {{ buy_data.sum }} руб.
+            </div>
+            <div>
+                Покупатель: {{ buy_data.customer }}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
